@@ -9,12 +9,20 @@ import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
 import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
+import 'package:telephony/telephony.dart';
+import 'package:intl/intl.dart';
+
+// Import the firebase_core plugin
+import 'package:firebase_core/firebase_core.dart';
+//Import firestore database
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
   await initFirebase();
-
+  await Firebase.initializeApp();
   await FlutterFlowTheme.initialize();
 
   runApp(MyApp());
@@ -35,9 +43,58 @@ class _MyAppState extends State<MyApp> {
 
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
+  String sms = "";
+  final Telephony telephony = Telephony.instance;
 
   @override
   void initState() {
+    CollectionReference _collectionRef = FirebaseFirestore.instance.collection('text_data');
+
+    Future<void> getData() async {
+      // Get docs from collection reference
+      QuerySnapshot querySnapshot = await _collectionRef.get();
+      // Get data from docs and convert map to List
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+      print(allData);
+    }
+    getData();
+
+    telephony.listenIncomingSms(
+      onNewMessage: (SmsMessage message) {
+        print(message.address); //+977981******67, sender nubmer
+        print(message.body); //sms text
+        var msgTimestamp =   message.date; //1659690242000, timestamp
+        var date = DateTime.fromMillisecondsSinceEpoch(msgTimestamp!);
+
+
+        var formattedDate = DateFormat('E, MMM M - hh:mm a').format(date); // Apr 8, 2020 10:02 AM
+        print(formattedDate);
+
+
+        //CollectionReference textData = FirebaseFirestore.instance.collection('text_Data');
+
+          // Calling the collection to add new sms to cloud firestore
+        //adding to firebase collection
+        _collectionRef
+              .add({
+            //Data added in the form of a dictionary into the document.
+            'sender': message.address,
+            'recipient': message.serviceCenterAddress,
+            'timestamp': formattedDate,
+            'body': message.body,
+            'fraud_threat' : true,
+            'score' : 0.78
+          })
+              .then((value) => print("New SMS Added to text_data collection in firestore"))
+              .catchError((error) => print("New SMS couldn't be added."));
+
+
+        setState(() {
+          sms = message.body.toString();
+        });
+      },
+      listenInBackground: false,
+    );
     super.initState();
 
     _appStateNotifier = AppStateNotifier.instance;
