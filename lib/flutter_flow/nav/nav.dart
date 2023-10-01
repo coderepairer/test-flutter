@@ -45,11 +45,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, _) => TextFraudsListWidget(),
         ),
         FFRoute(
-          name: 'List11Messages',
-          path: '/list11Messages',
-          builder: (context, params) => List11MessagesWidget(),
-        ),
-        FFRoute(
           name: 'TextFraudsList',
           path: '/textFraudsList',
           builder: (context, params) => TextFraudsListWidget(
