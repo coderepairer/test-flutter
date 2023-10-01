@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'schema/util/firestore_util.dart';
 
-import 'schema/users_record.dart';
+import 'schema/text_data_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,40 +11,40 @@ export 'schema/index.dart';
 export 'schema/util/firestore_util.dart';
 export 'schema/util/schema_util.dart';
 
-export 'schema/users_record.dart';
+export 'schema/text_data_record.dart';
 
-/// Functions to query UsersRecords (as a Stream and as a Future).
-Future<int> queryUsersRecordCount({
+/// Functions to query TextDataRecords (as a Stream and as a Future).
+Future<int> queryTextDataRecordCount({
   Query Function(Query)? queryBuilder,
   int limit = -1,
 }) =>
     queryCollectionCount(
-      UsersRecord.collection,
+      TextDataRecord.collection,
       queryBuilder: queryBuilder,
       limit: limit,
     );
 
-Stream<List<UsersRecord>> queryUsersRecord({
+Stream<List<TextDataRecord>> queryTextDataRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      UsersRecord.collection,
-      UsersRecord.fromSnapshot,
+      TextDataRecord.collection,
+      TextDataRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<List<UsersRecord>> queryUsersRecordOnce({
+Future<List<TextDataRecord>> queryTextDataRecordOnce({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      UsersRecord.collection,
-      UsersRecord.fromSnapshot,
+      TextDataRecord.collection,
+      TextDataRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
