@@ -50,14 +50,14 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     CollectionReference _collectionRef = FirebaseFirestore.instance.collection('text_data');
 
-    Future<void> getData() async {
+    /*Future<void> getData() async {
       // Get docs from collection reference
       QuerySnapshot querySnapshot = await _collectionRef.get();
       // Get data from docs and convert map to List
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
       print(allData);
     }
-    getData();
+    getData();*/
 
     telephony.listenIncomingSms(
       onNewMessage: (SmsMessage message) {
@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
         var date = DateTime.fromMillisecondsSinceEpoch(msgTimestamp!);
 
 
-        var formattedDate = DateFormat('E, MMM M - hh:mm a').format(date); // Apr 8, 2020 10:02 AM
+        var formattedDate = DateFormat('E, MMM d - hh:mm a').format(date); // Apr 8, 2020 10:02 AM
         print(formattedDate);
 
 
